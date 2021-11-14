@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<project default="jar" name="asrdemo">
+<!-- 工程目录结构
+project
+|-bin
+|-src
+|-out
+|-build.xml
+-->
+<property name="src.dir" value="src"/>
+<property name="classes.dir" value="bin"/>
+<property name="output.dir" value="out"/>
+<property name="javadoc.dir"  value="javadoc"/>
+<property name="jarname" value="asrdemo.jar"/>
+<!-- 第三方jar包的路径 -->
+<!-- 1. 初始化工作，如创建目录等 -->
+<target name="init">
+<mkdir dir="${classes.dir}"/>
+<mkdir dir="${output.dir}"/>
+</target>
+<!-- 2. 编译 -->
+<target name="compile" depends="init">
+<javac srcdir="${src.dir}" destdir="${classes.dir}">
+<compilerarg line="-encoding UTF-8"/>
+</javac>
+</target>
+<!-- 3. 打包jar文件 -->
+<target name="jar" depends="compile">
+
+<jar destfile="${output.dir}/${jarname}" basedir="${classes.dir}">
+<manifest>
+<attribute name="Class-Path" value="${mf.classpath}"/>
+</manifest>
+</jar>
+</target>
+
+  <target name="javadoc" depends="compile"
+   description="Create Javadoc API documentation">
+
+    <mkdir          dir="${javadoc.dir}"/>
+    <javadoc sourcepath="${src.dir}"
+                destdir="${javadoc.dir}"
+              maxmemory="768m"
+                 author="true"
+                 source="1.8"
+                Overview="${src.home}/socket.server/overview.html"
+                Doctitle="Stanford JavaNLP API Documentation"
+             Windowtitle="Stanford JavaNLP API"
+           packagenames="*"
+           encoding="utf-8" docencoding="utf-8">
+      <bottom><![CDATA[<FONT SIZE=2><A HREF=\"http://nlp.stanford.edu\">Stanford NLP Group</A></FONT>]]></bottom>
+      <link href="http://java.sun.com/j2se/1.6.0/docs/api/"/>
+    </javadoc>
+
+  </target>
+
+</project>
